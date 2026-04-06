@@ -1,27 +1,18 @@
-FROM php:8.2-fpm
+# Base PHP image
+FROM php:8.2-cli
+
+# Set working directory
+WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
-    curl \
-    zip \
     unzip \
+    libzip-dev \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
-    libzip-dev \
-    libmagickwand-dev \
-    mysql-client \
-    redis-tools \
-    supervisor \
-    nginx \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) \
-    gd \
-    zip \
-    pdo_mysql \
-    redis \
-    bcmath
+    && docker-php-ext-install pdo pdo_sqlite zip gd bcmath
 
 # Install ImageMagick for PDF processing
 RUN pecl install imagick && docker-php-ext-enable imagick
@@ -29,29 +20,21 @@ RUN pecl install imagick && docker-php-ext-enable imagick
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-WORKDIR /app
-
-# Copy application
+# Copy app
 COPY . .
 
 # Install PHP dependencies
 RUN composer install --optimize-autoloader --no-dev
 
-# Create required directories
+# Create storage directories
 RUN mkdir -p storage/logs storage/app/public storage/framework/{cache,sessions,views} \
     && chmod -R 775 storage bootstrap/cache
 
-# Copy Nginx config
-COPY docker/nginx.conf /etc/nginx/sites-available/default
-COPY docker/php.ini /usr/local/etc/php/conf.d/laravel.ini
-COPY docker/supervisor.conf /etc/supervisor/conf.d/laravel.conf
+# Create SQLite database
+RUN touch database/database.sqlite
 
-# Expose ports
-EXPOSE 80 443 6001
+# Expose port
+EXPOSE 8000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD php-fpm-healthcheck || exit 1
-
-# Start services
-CMD ["/bin/bash", "-c", "php artisan migrate --force && php artisan optimize && supervisord -c /etc/supervisor/conf.d/laravel.conf"]
+# Start Laravel server
+CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000
