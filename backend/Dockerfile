@@ -68,5 +68,10 @@ EXPOSE 10000
 # =========================
 # Run migrations and start server
 # =========================
-CMD php artisan migrate --force && \
-    php artisan serve --host=0.0.0.0 --port=$PORT
+CMD ["/bin/sh", "-c", "\
+    if [ ! -f database/database.sqlite ]; then \
+    touch database/database.sqlite; \
+    fi && \
+    php artisan migrate --force && \
+    php artisan serve --host=0.0.0.0 --port=$PORT \
+    "]
