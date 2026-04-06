@@ -1,8 +1,14 @@
+# =========================
+# Base image
+# =========================
 FROM php:8.2-fpm
 
-# Install system dependencies + SQLite dev
+# =========================
+# Install system dependencies
+# =========================
 RUN apt-get update && apt-get install -y \
     git \
+    curl \
     unzip \
     libzip-dev \
     libpng-dev \
@@ -10,30 +16,57 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libsqlite3-dev \
     sqlite3 \
-    && docker-php-ext-install pdo pdo_sqlite zip gd bcmath
+    libicu-dev \
+    libonig-dev \
+    nodejs \
+    npm \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) \
+    pdo pdo_sqlite zip gd bcmath intl
 
+# =========================
 # Install Composer
+# =========================
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# =========================
+# Set working directory
+# =========================
 WORKDIR /app
 
-# Copy application code
+# =========================
+# Copy app source
+# =========================
 COPY . .
 
+# =========================
 # Install PHP dependencies
+# =========================
 RUN composer install --optimize-autoloader --no-dev
 
-# Create required directories
-RUN mkdir -p storage/logs storage/app/public storage/framework/{cache,sessions,views} \
+# =========================
+# Install Node dependencies and build Tailwind CSS
+# =========================
+RUN npm install && npm run build
+
+# =========================
+# Create required directories for Laravel
+# =========================
+RUN mkdir -p storage/logs storage/framework/{cache,sessions,views} \
     && chmod -R 775 storage bootstrap/cache
 
-# Copy optional configs if you have them
-# COPY docker/nginx.conf /etc/nginx/sites-available/default
-# COPY docker/php.ini /usr/local/etc/php/conf.d/laravel.ini
-# COPY docker/supervisor.conf /etc/supervisor/conf.d/laravel.conf
+# =========================
+# Create SQLite database if missing
+# =========================
+RUN touch database/database.sqlite
 
+# =========================
 # Expose port
-EXPOSE 8000
+# =========================
+EXPOSE 10000
 
-# Start app
-CMD ["bash", "-c", "touch database/database.sqlite && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
+# =========================
+# Run migrations and start server
+# =========================
+CMD php artisan migrate --force && \
+    php artisan serve --host=0.0.0.0 --port=$PORT
