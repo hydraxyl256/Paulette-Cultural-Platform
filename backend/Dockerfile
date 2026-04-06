@@ -47,6 +47,11 @@ RUN composer install --optimize-autoloader --no-dev
 # =========================
 # Install Node dependencies and build Tailwind CSS
 # =========================
+
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
+
+# Install Node.js dependencies
 RUN npm install && npm run build
 
 # =========================
@@ -68,10 +73,5 @@ EXPOSE 10000
 # =========================
 # Run migrations and start server
 # =========================
-CMD ["/bin/sh", "-c", "\
-    if [ ! -f database/database.sqlite ]; then \
-    touch database/database.sqlite; \
-    fi && \
-    php artisan migrate --force && \
-    php artisan serve --host=0.0.0.0 --port=$PORT \
-    "]
+COPY entrypoint.sh /app/entrypoint.sh
+CMD ["/app/entrypoint.sh"]
