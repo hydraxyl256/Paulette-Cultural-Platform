@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+/* Filament Super Admin theme is built as a separate Vite entry: resources/css/filament/admin-theme.css (see viteTheme in AdminPanelProvider). */
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-headline: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+}
+
+@utility font-headline {
+    font-family: var(--font-headline);
+}
+
+[x-cloak] {
+    display: none !important;
+}

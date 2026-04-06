@@ -1,0 +1,95 @@
+services:
+  cache:
+    driver: redis
+    connection: cache
+    prefix: culturekids_cache
+
+  session:
+    driver: redis
+    connection: cache
+    table: sessions
+
+  queue:
+    default: redis
+    connections:
+      redis:
+        driver: redis
+        connection: default
+        queue: 'default'
+        retry_after: 90
+        block_for: null
+
+redis:
+  cluster: false
+  connections:
+    default:
+      scheme: tcp
+      host: 127.0.0.1
+      password: null
+      port: 6379
+      database: 0
+      
+    cache:
+      scheme: tcp
+      host: 127.0.0.1
+      password: null
+      port: 6379
+      database: 1
+
+database:
+  default: mysql
+  connections:
+    mysql:
+      driver: mysql
+      host: 127.0.0.1
+      port: 3306
+      database: culturekids
+      username: root
+      password: ''
+      charset: utf8mb4
+      collation: utf8mb4_unicode_ci
+      prefix: ''
+      strict: true
+      engine: InnoDB
+
+mail:
+  driver: smtp
+  host: smtp.mailtrap.io
+  port: 2525
+  username: env:MAIL_USERNAME
+  password: env:MAIL_PASSWORD
+  encryption: tls
+  from:
+    address: noreply@culturekids.local
+    name: Paulette Culture Kids
+
+storage:
+  disks:
+    local:
+      driver: local
+      root: storage/app
+
+    public:
+      driver: local
+      root: storage/app/public
+      url: /storage
+      visibility: public
+
+    s3:
+      driver: s3
+      key: env:AWS_ACCESS_KEY_ID
+      secret: env:AWS_SECRET_ACCESS_KEY
+      region: env:AWS_DEFAULT_REGION
+      bucket: env:AWS_BUCKET
+      url: env:AWS_URL
+      visibility: private
+
+broadcast:
+  default: log
+  connections:
+    log:
+      driver: log
+
+    redis:
+      driver: redis
+      connection: default

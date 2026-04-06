@@ -1,0 +1,8 @@
+You have full access to the entire project structure including:
+- /backend (Laravel + Filament)
+- /mobile (Expo React Native)
+
+Always read relevant files before making changes.
+Prefer editing existing files instead of creating duplicates.
+Use emerald-lime gradients and glassmorphism from SUPER_ADMIN_DESIGN_SYSTEM.md for all UI.
+Keep all Laravel functionality intact when redesigning Blade pages.

@@ -1,0 +1,7 @@
+/**
+ * Super Admin panel styles are defined in `admin-theme.css`.
+ * That file is a Vite entry and registered with Panel::viteTheme() — not imported here,
+ * so Filament receives a proper manifest URL and Tailwind/Filament CSS are bundled once.
+ *
+ * @see resources/css/filament/admin-theme.css
+ */

@@ -1,0 +1,1517 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Tailwind v4: register sources BEFORE importing Filament (which pulls in tailwindcss). */
+@source '../../app/**/*.php';
+@source '../../resources/views/**/*.blade.php';
+@source '../../resources/js/**/*.js';
+@source '../../../vendor/filament/**/*.blade.php';
+
+@import '../../../vendor/filament/filament/resources/css/theme.css';
+
+:root {
+  /* Emerald Brand Colors */
+  --color-emerald-deep: #006948;
+  --color-emerald-base: #0f9361;
+  --color-emerald-light: #27d384;
+  --color-emerald-lime: #68dba9;
+
+  /* Amber Accent */
+  --color-amber-deep: #904d00;
+  --color-amber-base: #d67800;
+  --color-amber-light: #fe932c;
+  --color-amber-pale: #ffc580;
+
+  /* Violet System */
+  --color-violet-deep: #712ae2;
+  --color-violet-base: #9d5dff;
+  --color-violet-light: #d2bbff;
+  --color-violet-pale: #ede8ff;
+
+  /* Surface Scale */
+  --color-surface-base: #faf8ff;
+  --color-surface-container-low: #f2f3ff;
+  --color-surface-container-mid: #e8e8f0;
+  --color-surface-container-high: #d9d9e8;
+  --color-outline-variant: #cac9d8;
+  --color-on-surface: #131b2e;
+
+  /* Semantic */
+  --color-error: #c5192d;
+  --color-success: #2d7c2d;
+  --color-warning: #cc7c1a;
+  --color-info: #0066cc;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(19, 27, 46, 0.04);
+  --shadow-lift-sm: 0 4px 12px rgba(19, 27, 46, 0.06);
+  --shadow-md: 0 4px 16px rgba(19, 27, 46, 0.06);
+  --shadow-lg: 0 8px 32px rgba(19, 27, 46, 0.08);
+  --shadow-xl: 0 16px 48px rgba(19, 27, 46, 0.12);
+  --shadow-lift-md: 0 8px 32px rgba(19, 27, 46, 0.10);
+  --shadow-lift-lg: 0 12px 40px rgba(19, 27, 46, 0.14);
+}
+
+/* ============================================================================
+   GLOBAL STYLES
+   ============================================================================ */
+
+* {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+html.fi,
+html.fi body,
+.fi-body {
+  background-color: var(--color-surface-base) !important;
+  color: var(--color-on-surface);
+}
+
+body {
+  background-color: var(--color-surface-base);
+  color: var(--color-on-surface);
+}
+
+/* Headlines always use Manrope */
+h1, h2, h3, h4, h5, h6,
+.headline-lg,
+.headline-md,
+.headline-sm {
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-weight: 700;
+}
+
+/* ============================================================================
+   FILAMENT MAIN LAYOUT
+   ============================================================================ */
+
+/* Prevent main column from forcing 100vw + sidebar wrap (content dropping below nav). */
+.fi-body.fi-body-has-navigation .fi-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100dvh;
+}
+
+.fi-body.fi-body-has-navigation .fi-main-ctn {
+  width: auto !important;
+  flex: 1 1 0%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.fi-body.fi-body-has-topbar.fi-body-has-navigation .fi-main-ctn {
+  min-height: calc(100dvh - 4rem);
+}
+
+.fi-topbar {
+  background: rgba(255, 248, 255, 0.78);
+  backdrop-filter: blur(32px) saturate(140%);
+  -webkit-backdrop-filter: blur(32px) saturate(140%);
+  border-bottom: 1px solid rgba(202, 201, 216, 0.18);
+  box-shadow: var(--shadow-sm);
+  height: 64px;
+  padding: 0 24px;
+}
+
+/* Sidebar: full glass stack */
+.fi-sidebar.fi-main-sidebar {
+  background: rgba(255, 248, 255, 0.72) !important;
+  backdrop-filter: blur(28px) saturate(150%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
+  border-right: 1px solid rgba(202, 201, 216, 0.2);
+  box-shadow: 4px 0 40px rgba(19, 27, 46, 0.05);
+}
+
+.fi-sidebar.fi-main-sidebar.fi-collapsed {
+  width: 4.5rem !important;
+}
+
+.fi-sidebar-nav {
+  scrollbar-gutter: stable;
+}
+
+/* Settings block: soft separator (ghost edge, design system) */
+.fi-sidebar-group.fi-sidebar-group--ck-settings {
+  margin-top: 0.35rem;
+  padding-top: 1.15rem;
+  box-shadow: 0 -12px 28px rgba(19, 27, 46, 0.04);
+}
+
+.fi-sidebar-group.fi-sidebar-group--ck-settings > .fi-sidebar-group-btn {
+  border-top: 1px solid rgba(202, 201, 216, 0.15);
+  padding-top: 0.85rem;
+  margin-top: 0.15rem;
+}
+
+/* Collapsible group header — Manrope label */
+.fi-sidebar-group-btn {
+  border-radius: 12px;
+  margin-inline: 4px;
+  transition: background-color 180ms ease;
+}
+
+.fi-sidebar-group-btn:hover {
+  background: rgba(232, 232, 240, 0.45);
+}
+
+.fi-sidebar-group-label {
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(19, 27, 46, 0.55);
+}
+
+/* Nav items */
+.fi-sidebar-item {
+  margin: 3px 6px;
+  border-radius: 14px;
+}
+
+.fi-sidebar-item > .fi-sidebar-item-btn {
+  border-radius: 14px;
+  transition: background 200ms ease, box-shadow 200ms ease, color 200ms ease;
+}
+
+.fi-sidebar-item.fi-sidebar-item-has-url > .fi-sidebar-item-btn:hover {
+  background: rgba(232, 232, 240, 0.55) !important;
+}
+
+/* Active: emerald–lime gradient + left rail (Filament v4: active styles live on inner button) */
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn {
+  background: linear-gradient(
+    120deg,
+    rgba(0, 105, 72, 0.2) 0%,
+    rgba(15, 147, 97, 0.14) 45%,
+    rgba(104, 219, 169, 0.12) 100%
+  ) !important;
+  border-left: 3px solid var(--color-emerald-lime);
+  padding-left: calc(0.5rem - 3px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 8px 24px rgba(15, 147, 97, 0.08);
+}
+
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn .fi-icon {
+  color: var(--color-emerald-deep) !important;
+}
+
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn .fi-sidebar-item-label {
+  color: var(--color-emerald-deep) !important;
+  font-weight: 600;
+}
+
+.fi-sidebar-item-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-on-surface);
+}
+
+/* Main content area */
+.fi-main {
+  background-color: var(--color-surface-base);
+  padding: 32px 24px;
+}
+
+/* ============================================================================
+   CARD SYSTEM (The Most Reused Component)
+   ============================================================================ */
+
+.fi-section,
+.fi-card,
+[class*='card'] {
+  background: rgba(255, 248, 255, 0.8);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(202, 201, 216, 0.15);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+  transition: all 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.fi-section:hover,
+.fi-card:hover,
+[class*='card']:hover {
+  box-shadow: var(--shadow-lg);
+  transform: scale(1.01);
+}
+
+/* Card sections separator */
+.fi-section > * + * {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(202, 201, 216, 0.15);
+}
+
+/* ============================================================================
+   BUTTONS & ACTIONS
+   ============================================================================ */
+
+/* Primary Button (Emerald Gradient) */
+.fi-btn-primary,
+button.fi-btn-primary,
+[class*='btn-primary'] {
+  background: linear-gradient(135deg, #006948 0%, #27d384 100%);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 200ms ease;
+  box-shadow: var(--shadow-md);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.fi-btn-primary:hover,
+button.fi-btn-primary:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-lift-md);
+  opacity: 0.95;
+}
+
+.fi-btn-primary:active,
+button.fi-btn-primary:active {
+  transform: scale(0.98);
+  box-shadow: none;
+}
+
+.fi-btn-primary:disabled,
+button.fi-btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Secondary Button */
+.fi-btn-secondary,
+button.fi-btn-secondary,
+[class*='btn-secondary'] {
+  background-color: var(--color-surface-container-mid);
+  color: var(--color-on-surface);
+  border: 1px solid rgba(202, 201, 216, 0.3);
+  border-radius: 20px;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 200ms ease;
+}
+
+.fi-btn-secondary:hover,
+button.fi-btn-secondary:hover {
+  background-color: var(--color-surface-container-high);
+  border-color: rgba(202, 201, 216, 0.5);
+  box-shadow: var(--shadow-lift-sm);
+  transform: scale(1.01);
+}
+
+/* Danger Button (Red Gradient) */
+.fi-btn-danger,
+button.fi-btn-danger,
+[class*='btn-danger'] {
+  background: linear-gradient(135deg, #c5192d 0%, #ef4444 100%);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 200ms ease;
+  box-shadow: var(--shadow-md);
+}
+
+.fi-btn-danger:hover,
+button.fi-btn-danger:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-lift-lg);
+}
+
+/* Icon Button */
+.fi-icon-btn,
+[class*='icon-btn'] {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  transition: all 200ms ease;
+  cursor: pointer;
+}
+
+.fi-icon-btn:hover,
+[class*='icon-btn']:hover {
+  background-color: var(--color-surface-container-low);
+  box-shadow: var(--shadow-sm);
+}
+
+.fi-icon-btn.primary,
+[class*='icon-btn'].primary {
+  color: var(--color-emerald-base);
+}
+
+.fi-icon-btn.secondary,
+[class*='icon-btn'].secondary {
+  color: var(--color-amber-base);
+}
+
+.fi-icon-btn.tertiary,
+[class*='icon-btn'].tertiary {
+  color: var(--color-violet-base);
+}
+
+/* ============================================================================
+   INPUT FIELDS & FORM CONTROLS
+   ============================================================================ */
+
+.fi-input,
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='number'],
+textarea,
+.fi-select,
+select {
+  background-color: var(--color-surface-container-low);
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--color-on-surface);
+  transition: all 200ms ease;
+}
+
+.fi-input:focus,
+input[type='text']:focus,
+input[type='email']:focus,
+input[type='password']:focus,
+input[type='number']:focus,
+textarea:focus,
+.fi-select:focus,
+select:focus {
+  border: 2px solid var(--color-emerald-base);
+  background-color: var(--color-surface-base);
+  box-shadow: 0 0 0 3px rgba(15, 147, 97, 0.1);
+  outline: none;
+}
+
+.fi-input::placeholder,
+input::placeholder,
+textarea::placeholder {
+  color: rgba(19, 27, 46, 0.6);
+}
+
+.fi-input:disabled,
+input:disabled,
+textarea:disabled,
+select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: var(--color-surface-container-high);
+}
+
+/* Error state */
+.fi-input.error,
+input.error,
+textarea.error {
+  border: 2px solid var(--color-error);
+}
+
+/* ============================================================================
+   BADGES & TAGS
+   ============================================================================ */
+
+.fi-badge,
+[class*='badge'] {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  font-family: 'Inter', system-ui, sans-serif;
+  letter-spacing: 0.025em;
+  transition: all 150ms ease;
+}
+
+.badge-success {
+  background-color: rgba(45, 124, 45, 0.15);
+  color: var(--color-success);
+}
+
+.badge-warning {
+  background-color: rgba(204, 124, 26, 0.15);
+  color: var(--color-warning);
+}
+
+.badge-error {
+  background-color: rgba(197, 25, 45, 0.15);
+  color: var(--color-error);
+}
+
+.badge-info {
+  background-color: rgba(0, 102, 204, 0.15);
+  color: var(--color-info);
+}
+
+.badge-neutral {
+  background-color: rgba(202, 201, 216, 0.2);
+  color: var(--color-on-surface);
+}
+
+/* ============================================================================
+   STATUS INDICATORS
+   ============================================================================ */
+
+.status-dot {
+  display: inline-block;
+  border-radius: 50%;
+  animation-play-state: paused;
+  transition: background-color 200ms ease;
+}
+
+.status-dot.active {
+  background-color: var(--color-emerald-base);
+  animation: none;
+}
+
+.status-dot.pending {
+  background-color: var(--color-amber-base);
+  animation: pulse-soft 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.status-dot.failed {
+  background-color: var(--color-error);
+  animation: pulse-fast 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.status-dot.offline {
+  background-color: var(--color-outline-variant);
+  opacity: 0.6;
+}
+
+.status-dot.system {
+  background-color: var(--color-violet-base);
+  animation: none;
+}
+
+.status-dot.sm {
+  width: 8px;
+  height: 8px;
+}
+
+.status-dot.md {
+  width: 12px;
+  height: 12px;
+}
+
+.status-dot.lg {
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes pulse-fast {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* ============================================================================
+   DATA TABLES
+   ============================================================================ */
+
+.fi-table,
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: transparent;
+}
+
+.fi-table thead,
+thead {
+  background-color: var(--color-surface-container-low);
+  border-bottom: 1px solid rgba(202, 201, 216, 0.15);
+}
+
+.fi-table thead th,
+thead th {
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Manrope', system-ui, sans-serif;
+  color: rgba(19, 27, 46, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: none;
+}
+
+.fi-table tbody tr,
+tbody tr {
+  border-bottom: 1px solid transparent;
+  transition: all 200ms ease;
+}
+
+/* Alternating row striping */
+.fi-table tbody tr:nth-child(odd),
+tbody tr:nth-child(odd) {
+  background-color: var(--color-surface-base);
+}
+
+.fi-table tbody tr:nth-child(even),
+tbody tr:nth-child(even) {
+  background-color: rgba(242, 243, 255, 0.5);
+}
+
+.fi-table tbody tr:hover,
+tbody tr:hover {
+  background-color: var(--color-surface-container-mid);
+  box-shadow: inset 0 0 24px rgba(15, 147, 97, 0.05);
+  transform: scaleY(1.02);
+}
+
+.fi-table td,
+td {
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--color-on-surface);
+  border: none;
+}
+
+.fi-table td.mono,
+td.mono {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: rgba(19, 27, 46, 0.7);
+}
+
+/* Table actions column */
+.fi-table-actions,
+.table-actions {
+  text-align: right;
+  padding: 16px 12px;
+}
+
+/* Sortable column header */
+.fi-sortable-header {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 150ms ease;
+}
+
+.fi-sortable-header:hover {
+  color: var(--color-on-surface);
+}
+
+.fi-sort-icon {
+  opacity: 0.4;
+  transition: opacity 150ms ease;
+}
+
+.fi-sortable-header.fi-active .fi-sort-icon {
+  opacity: 1;
+  color: var(--color-emerald-base);
+}
+
+/* ============================================================================
+   MODALS & DIALOGS
+   ============================================================================ */
+
+.fi-modal,
+.dialog,
+[role='dialog'] {
+  background: rgba(19, 27, 46, 0.6);
+  backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  box-shadow: var(--shadow-xl);
+}
+
+.fi-modal-content,
+.dialog-content {
+  background: rgba(255, 248, 255, 0.95);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(202, 201, 216, 0.15);
+  border-radius: 24px;
+  padding: 24px;
+}
+
+/* ============================================================================
+   EMPTY STATES & PLACEHOLDERS
+   ============================================================================ */
+
+.fi-empty-state,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  text-align: center;
+  background: rgba(242, 243, 255, 0.5);
+  border-radius: 16px;
+  border: 2px dashed rgba(202, 201, 216, 0.3);
+  min-height: 200px;
+}
+
+.empty-state-icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+  color: var(--color-emerald-base);
+}
+
+.empty-state-title {
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-on-surface);
+  margin-bottom: 8px;
+}
+
+.empty-state-description {
+  font-size: 14px;
+  color: rgba(19, 27, 46, 0.6);
+  margin-bottom: 16px;
+  max-width: 400px;
+}
+
+/* ============================================================================
+   LOADING & SKELETONS
+   ============================================================================ */
+
+.skeleton,
+.loading {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-container-mid) 0%,
+    var(--color-surface-container-low) 50%,
+    var(--color-surface-container-mid) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+  border-radius: 12px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-line {
+  height: 16px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
+
+.skeleton-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+/* ============================================================================
+   UTILITY CLASSES
+   ============================================================================ */
+
+/* Glassmorphism tiers */
+.glass-tier-1 {
+  background: rgba(255, 248, 255, 0.8);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(202, 201, 216, 0.15);
+}
+
+.glass-tier-2 {
+  background: rgba(242, 243, 255, 0.85);
+  backdrop-filter: blur(32px);
+  border: 1px solid rgba(202, 201, 216, 0.20);
+}
+
+.glass-tier-3 {
+  background: rgba(19, 27, 46, 0.6);
+  backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Gradient text */
+.gradient-emerald {
+  background: linear-gradient(135deg, #006948 0%, #27d384 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-amber {
+  background: linear-gradient(135deg, #904d00 0%, #fe932c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-violet {
+  background: linear-gradient(135deg, #712ae2 0%, #d2bbff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Text opacity variants */
+.text-primary-high {
+  color: var(--color-on-surface);
+  opacity: 1;
+}
+
+.text-primary-medium {
+  color: var(--color-on-surface);
+  opacity: 0.8;
+}
+
+.text-primary-low {
+  color: var(--color-on-surface);
+  opacity: 0.6;
+}
+
+.text-primary-disabled {
+  color: var(--color-on-surface);
+  opacity: 0.3;
+}
+
+/* Spacing utilities */
+.gap-3 { gap: 12px; }
+.gap-4 { gap: 16px; }
+.gap-5 { gap: 20px; }
+.gap-6 { gap: 24px; }
+.gap-8 { gap: 32px; }
+
+.p-4 { padding: 16px; }
+.p-6 { padding: 24px; }
+.p-8 { padding: 32px; }
+
+.mb-4 { margin-bottom: 16px; }
+.mb-6 { margin-bottom: 24px; }
+.mb-8 { margin-bottom: 32px; }
+
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================ */
+
+@media (max-width: 1200px) {
+  .fi-main {
+    padding: 24px 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .fi-main {
+    padding: 16px 12px;
+  }
+
+  .fi-topbar {
+    padding: 0 16px;
+  }
+}
+
+/* ============================================================================
+   FILAMENT AUTH (ADMIN LOGIN) - PREMIUM GLASSMORPHISM
+   ============================================================================ */
+
+.fi-simple-layout {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 8% 12%, rgba(15, 147, 97, 0.16) 0%, rgba(15, 147, 97, 0) 42%),
+    radial-gradient(circle at 88% 14%, rgba(157, 93, 255, 0.12) 0%, rgba(157, 93, 255, 0) 40%),
+    radial-gradient(circle at 50% 100%, rgba(254, 147, 44, 0.1) 0%, rgba(254, 147, 44, 0) 44%),
+    var(--color-surface-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.fi-simple-layout::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.24) 0 1px, transparent 1px),
+    radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.16) 0 1px, transparent 1px);
+  background-size: 22px 22px, 28px 28px;
+  opacity: 0.2;
+}
+
+.fi-simple-main-ctn {
+  padding: 32px 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.fi-simple-main {
+  max-width: 420px;
+}
+
+.fi-simple-page-content {
+  border-radius: 24px;
+  border: 1px solid rgba(202, 201, 216, 0.18);
+  background: rgba(255, 248, 255, 0.82);
+  backdrop-filter: blur(24px);
+  box-shadow: var(--shadow-lg);
+  padding: 24px;
+}
+
+.fi-simple-page-content:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-xl);
+}
+
+.fi-simple-header {
+  margin-bottom: 20px;
+}
+
+.fi-simple-header-heading {
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-on-surface);
+}
+
+.fi-simple-header-subheading {
+  color: rgba(19, 27, 46, 0.68);
+}
+
+.fi-admin-back-link {
+  font-weight: 600;
+  color: #0f9361;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.fi-admin-back-link:hover {
+  color: #006948;
+}
+
+/* Ensure icons never blow up if fallback styles load */
+.fi-icon,
+.fi-icon-btn svg,
+.fi-sidebar-item-icon,
+[class*='fi-icon'] svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* ============================================================================
+   FILAMENT v4 — HIGH-SPECIFICITY SHELL (must win over @apply in layer(components))
+   Filament uses nested selectors + utilities (bg-white, lg:bg-transparent, rings).
+   Prefix everything with html.fi and use !important on surface treatments.
+   ============================================================================ */
+
+html.fi {
+  --ck-glass-bg: rgba(255, 248, 255, 0.82);
+  --ck-glass-bg-strong: rgba(255, 248, 255, 0.9);
+  --ck-glass-border: rgba(202, 201, 216, 0.18);
+  --ck-lift: var(--shadow-lg);
+}
+
+html.fi.dark {
+  --ck-glass-bg: rgba(24, 27, 38, 0.78);
+  --ck-glass-bg-strong: rgba(28, 32, 44, 0.88);
+  --ck-glass-border: rgba(255, 255, 255, 0.08);
+  --color-surface-base: #0b0d12;
+  --color-on-surface: #e8e9ef;
+  /* Sidebar-specific glass tint (emerald-lime, not flat blue-grey) */
+  --ck-sidebar-glass: linear-gradient(
+    165deg,
+    rgba(0, 105, 72, 0.22) 0%,
+    rgba(12, 28, 38, 0.55) 38%,
+    rgba(8, 16, 26, 0.72) 100%
+  );
+}
+
+/* Shell: sidebar — premium glass + emerald-lime tint (full panel, not only active item) */
+html.fi .fi-sidebar.fi-main-sidebar {
+  position: relative;
+  isolation: isolate;
+  background:
+    var(--ck-sidebar-glass, linear-gradient(165deg, rgba(0, 105, 72, 0.14) 0%, rgba(28, 32, 44, 0.82) 45%, rgba(20, 24, 34, 0.9) 100%)),
+    rgba(255, 248, 255, 0.06) !important;
+  backdrop-filter: blur(36px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(160%) !important;
+  border-right: 1px solid rgba(104, 219, 169, 0.12) !important;
+  box-shadow:
+    4px 0 48px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+}
+
+html.fi.dark .fi-sidebar.fi-main-sidebar {
+  background:
+    var(--ck-sidebar-glass),
+    linear-gradient(180deg, rgba(15, 147, 97, 0.08) 0%, transparent 42%),
+    rgba(14, 18, 28, 0.72) !important;
+  border-right: 1px solid rgba(104, 219, 169, 0.14) !important;
+  box-shadow:
+    4px 0 56px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset -1px 0 0 rgba(39, 211, 132, 0.06) !important;
+}
+
+/* Subtle mesh glow on sidebar (does not affect readability) */
+html.fi .fi-sidebar.fi-main-sidebar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
+  background:
+    radial-gradient(120% 80% at 0% 0%, rgba(39, 211, 132, 0.18) 0%, transparent 55%),
+    radial-gradient(90% 70% at 100% 30%, rgba(0, 105, 72, 0.12) 0%, transparent 50%),
+    radial-gradient(80% 60% at 50% 100%, rgba(157, 93, 255, 0.06) 0%, transparent 45%);
+}
+
+html.fi.dark .fi-sidebar.fi-main-sidebar::before {
+  opacity: 0.75;
+}
+
+html.fi .fi-sidebar.fi-main-sidebar > * {
+  position: relative;
+  z-index: 1;
+}
+
+html.fi .fi-sidebar.fi-main-sidebar.fi-sidebar-open {
+  --tw-ring-shadow: 0 0 #0000 !important;
+}
+
+html.fi.dark .fi-sidebar.fi-main-sidebar.fi-sidebar-open {
+  box-shadow:
+    4px 0 56px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+}
+
+@media (min-width: 1024px) {
+  /* Keep layered sidebar treatment at lg+ (do not flatten to solid grey) */
+  html.fi .fi-sidebar.fi-main-sidebar {
+    backdrop-filter: blur(36px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(36px) saturate(160%) !important;
+  }
+}
+
+/* Sidebar navigation — beat default gray/white item states */
+html.fi .fi-sidebar .fi-sidebar-group-label {
+  font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif !important;
+  font-size: 0.6875rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  color: rgba(19, 27, 46, 0.55) !important;
+}
+
+html.fi.dark .fi-sidebar .fi-sidebar-group-label {
+  color: rgba(232, 233, 239, 0.5) !important;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Active nav: strong emerald–lime gradient + lime rail */
+html.fi .fi-sidebar-item.fi-active > .fi-sidebar-item-btn {
+  background: linear-gradient(
+    118deg,
+    rgba(0, 105, 72, 0.38) 0%,
+    rgba(15, 147, 97, 0.28) 42%,
+    rgba(104, 219, 169, 0.22) 100%
+  ) !important;
+  border-left: 3px solid var(--color-emerald-lime) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 10px 32px rgba(15, 147, 97, 0.22),
+    0 0 0 1px rgba(104, 219, 169, 0.18) !important;
+}
+
+html.fi .fi-sidebar-item.fi-sidebar-item-has-url:not(.fi-active) > .fi-sidebar-item-btn {
+  transition:
+    background 200ms ease,
+    box-shadow 220ms ease,
+    color 200ms ease !important;
+}
+
+html.fi .fi-sidebar-item.fi-sidebar-item-has-url > .fi-sidebar-item-btn:hover {
+  background: rgba(232, 232, 240, 0.65) !important;
+  box-shadow: none !important;
+}
+
+/* Inactive hover: soft emerald glow (dark + light) */
+html.fi.dark .fi-sidebar-item.fi-sidebar-item-has-url:not(.fi-active) > .fi-sidebar-item-btn:hover {
+  background: rgba(15, 147, 97, 0.14) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(104, 219, 169, 0.22),
+    0 0 28px rgba(39, 211, 132, 0.12),
+    0 8px 24px rgba(0, 0, 0, 0.2) !important;
+}
+
+html.fi:not(.dark) .fi-sidebar-item.fi-sidebar-item-has-url:not(.fi-active) > .fi-sidebar-item-btn:hover {
+  background: rgba(15, 147, 97, 0.1) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(104, 219, 169, 0.2),
+    0 0 20px rgba(39, 211, 132, 0.08) !important;
+}
+
+/* Top bar */
+html.fi .fi-topbar {
+  background: var(--ck-glass-bg) !important;
+  backdrop-filter: blur(32px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(140%) !important;
+  border-bottom: 1px solid var(--ck-glass-border) !important;
+}
+
+/* Main column */
+html.fi .fi-main {
+  background-color: var(--color-surface-base) !important;
+}
+
+html.fi .fi-main-ctn {
+  background: transparent !important;
+}
+
+/* Page surface */
+html.fi .fi-page {
+  background: transparent !important;
+}
+
+/* Sections — match Filament nested specificity (see vendor section.css) */
+html.fi .fi-section:not(.fi-section-not-contained):not(.fi-aside):not(.fi-secondary) {
+  background: var(--ck-glass-bg) !important;
+  backdrop-filter: blur(26px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(26px) saturate(140%) !important;
+  border-radius: 1.5rem !important;
+  border: 1px solid var(--ck-glass-border) !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
+  transition:
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+html.fi.dark .fi-section:not(.fi-section-not-contained):not(.fi-aside):not(.fi-secondary) {
+  box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+}
+
+html.fi .fi-section:not(.fi-section-not-contained):not(.fi-aside):not(.fi-secondary):hover {
+  box-shadow: var(--shadow-xl), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+  transform: translateY(-2px);
+}
+
+html.fi .fi-section.fi-secondary:not(.fi-section-not-contained):not(.fi-aside) {
+  background: rgba(242, 243, 255, 0.65) !important;
+  backdrop-filter: blur(20px) !important;
+  border-radius: 1.5rem !important;
+  border: 1px solid var(--ck-glass-border) !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+}
+
+html.fi .fi-section.fi-aside > .fi-section-content-ctn {
+  background: var(--ck-glass-bg) !important;
+  backdrop-filter: blur(24px) !important;
+  border-radius: 1.5rem !important;
+  border: 1px solid var(--ck-glass-border) !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+/* Section headers / footers — soften default gray borders */
+html.fi .fi-section:not(.fi-section-not-contained) > .fi-section-header {
+  border-color: rgba(202, 201, 216, 0.12) !important;
+}
+
+html.fi .fi-section:not(.fi-section-not-contained).fi-section-has-header:not(.fi-collapsed) > .fi-section-content-ctn {
+  border-color: rgba(202, 201, 216, 0.12) !important;
+}
+
+html.fi.dark .fi-section:not(.fi-section-not-contained) > .fi-section-header,
+html.fi.dark
+  .fi-section:not(.fi-section-not-contained).fi-section-has-header:not(.fi-collapsed)
+  > .fi-section-content-ctn {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Widgets / stats cards */
+html.fi .fi-wi-stats-overview-stat,
+html.fi [class*='fi-wi-'] .rounded-xl,
+html.fi [class*='fi-wi-'] .rounded-2xl {
+  border-radius: 1.5rem !important;
+}
+
+html.fi .fi-wi-stats-overview-stat {
+  background: var(--ck-glass-bg) !important;
+  backdrop-filter: blur(22px) !important;
+  border: 1px solid var(--ck-glass-border) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+/* Tables — glass container */
+html.fi .fi-ta-ctn,
+html.fi .fi-ta-content-ctn {
+  background: var(--ck-glass-bg) !important;
+  backdrop-filter: blur(20px) !important;
+  border-radius: 1.5rem !important;
+  border: 1px solid var(--ck-glass-border) !important;
+}
+
+/* Form field panels */
+html.fi .fi-fo-field-wrp,
+html.fi .fi-input-wrp {
+  border-radius: 0.75rem !important;
+}
+
+/* Primary actions — full emerald–lime stack */
+html.fi .fi-btn.fi-color-primary:not(.fi-outlined) {
+  background-image: linear-gradient(135deg, #006948 0%, #0f9361 50%, #27d384 100%) !important;
+  border: none !important;
+  box-shadow: var(--shadow-md), 0 12px 28px rgba(15, 147, 97, 0.22) !important;
+}
+
+html.fi .fi-btn.fi-color-primary:not(.fi-outlined):hover {
+  box-shadow: var(--shadow-lift-md), 0 16px 36px rgba(15, 147, 97, 0.28) !important;
+}
+
+/* Typography: Manrope on headings inside admin */
+html.fi .fi-section-header-heading,
+html.fi .fi-page-heading,
+html.fi .fi-header-heading {
+  font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif !important;
+  letter-spacing: -0.02em;
+}
+
+.fi-section,
+.fi-schema-section {
+  border-radius: 24px !important;
+}
+
+.fi-page > .fi-section,
+.fi-wi-stats-overview-stat {
+  border-radius: 24px;
+}
+
+/* ============================================================================
+   GLOBAL DASHBOARD (PremiumDashboardWidget — .ck-god-dashboard / .ck-dash-v2)
+   ============================================================================ */
+
+html.fi.dark .fi-main:has(.ck-god-dashboard) {
+  background-color: #07090e !important;
+  background-image:
+    radial-gradient(ellipse 120% 80% at 12% -8%, rgba(15, 147, 97, 0.16) 0%, transparent 55%),
+    radial-gradient(ellipse 90% 60% at 88% 8%, rgba(113, 42, 226, 0.09) 0%, transparent 45%),
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(0, 105, 72, 0.11) 0%, transparent 50%) !important;
+}
+
+html.fi .ck-god-dashboard {
+  --ck-dash-glass: rgba(16, 20, 30, 0.55);
+  --ck-dash-glass-strong: rgba(22, 26, 38, 0.78);
+  --ck-dash-border: rgba(255, 255, 255, 0.1);
+  --ck-dash-inset: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+html.fi.dark .ck-god-dashboard {
+  --ck-dash-glass: rgba(12, 16, 26, 0.68);
+  --ck-dash-glass-strong: rgba(18, 22, 34, 0.82);
+  --ck-dash-border: rgba(255, 255, 255, 0.09);
+}
+
+html.fi .ck-god-dashboard.space-y-12 > * + * {
+  margin-top: 3rem !important;
+}
+
+/* Shared glass panels (light + dark) */
+html.fi .ck-god-dashboard .ck-glass-panel {
+  box-shadow: 0 20px 56px -28px rgba(19, 27, 46, 0.2), var(--ck-dash-inset) !important;
+  transition:
+    transform 240ms cubic-bezier(0.34, 1.2, 0.64, 1),
+    box-shadow 240ms ease,
+    border-color 240ms ease !important;
+}
+
+html.fi.dark .ck-god-dashboard .ck-glass-panel {
+  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.55), var(--ck-dash-inset) !important;
+}
+
+html.fi .ck-god-dashboard .ck-glass-panel:hover {
+  box-shadow: 0 28px 64px -22px rgba(15, 147, 97, 0.12), var(--ck-dash-inset) !important;
+}
+
+html.fi.dark .ck-god-dashboard .ck-glass-panel:hover {
+  border-color: rgba(104, 219, 169, 0.14) !important;
+}
+
+/* Hero */
+html.fi.dark .ck-god-dashboard .ck-dash-hero {
+  background: linear-gradient(145deg, rgba(0, 105, 72, 0.14) 0%, rgba(18, 22, 32, 0.88) 45%, rgba(10, 14, 22, 0.92) 100%) !important;
+  border-color: rgba(104, 219, 169, 0.14) !important;
+  box-shadow: 0 32px 88px -28px rgba(0, 0, 0, 0.7), var(--ck-dash-inset) !important;
+  backdrop-filter: blur(36px) saturate(155%) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(155%) !important;
+}
+
+html.fi .ck-god-dashboard .ck-god-badge {
+  box-shadow: 0 0 40px rgba(52, 211, 153, 0.2) !important;
+}
+
+/* Loading skeleton */
+html.fi .ck-god-dashboard .ck-skeleton {
+  background: linear-gradient(110deg, rgba(228, 228, 235, 0.5) 0%, rgba(255, 255, 255, 0.85) 50%, rgba(228, 228, 235, 0.5) 100%);
+  background-size: 200% 100%;
+  animation: ck-dash-shimmer 1.6s ease-in-out infinite;
+  border: 1px solid rgba(202, 201, 216, 0.2);
+}
+
+html.fi.dark .ck-god-dashboard .ck-skeleton {
+  background: linear-gradient(110deg, rgba(30, 34, 44, 0.9) 0%, rgba(45, 50, 62, 0.95) 50%, rgba(30, 34, 44, 0.9) 100%);
+  background-size: 200% 100%;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+@keyframes ck-dash-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* KPI cards */
+html.fi.dark .ck-god-dashboard .ck-kpi-card-inner {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.05) 0%, var(--ck-dash-glass-strong) 100%) !important;
+  border-color: rgba(104, 219, 169, 0.12) !important;
+  box-shadow: 0 22px 52px -24px rgba(0, 0, 0, 0.55), var(--ck-dash-inset) !important;
+  backdrop-filter: blur(32px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(160%) !important;
+}
+
+html.fi.dark .ck-god-dashboard .ck-kpi-card:hover .ck-kpi-card-inner {
+  border-color: rgba(104, 219, 169, 0.24) !important;
+  box-shadow:
+    0 28px 64px -20px rgba(15, 147, 97, 0.2),
+    var(--ck-dash-inset) !important;
+}
+
+html.fi.dark .ck-god-dashboard section[aria-label='Key metrics'] [class*='bg-clip-text'] {
+  filter: drop-shadow(0 2px 16px rgba(15, 147, 97, 0.15));
+}
+
+html.fi.dark .ck-god-dashboard section[aria-label='Key metrics'] .text-emerald-400,
+html.fi.dark .ck-god-dashboard section[aria-label='Key metrics'] .text-emerald-600 {
+  color: #68dba9 !important;
+  text-shadow: 0 0 20px rgba(39, 211, 132, 0.22);
+}
+
+/* Organisations table */
+html.fi.dark .ck-god-dashboard section[aria-label='Organisations'] {
+  background: linear-gradient(185deg, rgba(255, 255, 255, 0.04) 0%, var(--ck-dash-glass) 100%) !important;
+}
+
+html.fi.dark .ck-god-dashboard .ck-table-wrap {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  background: rgba(0, 0, 0, 0.22) !important;
+  backdrop-filter: blur(14px) !important;
+}
+
+html.fi.dark .ck-god-dashboard .ck-org-table thead tr {
+  background: linear-gradient(180deg, rgba(15, 147, 97, 0.14) 0%, rgba(10, 14, 22, 0.96) 100%) !important;
+}
+
+html.fi.dark .ck-god-dashboard .ck-org-row:hover {
+  background: rgba(15, 147, 97, 0.07) !important;
+  box-shadow: inset 3px 0 0 rgba(104, 219, 169, 0.5);
+}
+
+/* Plan badges (gradient pills) */
+html.fi .ck-god-dashboard .ck-plan-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+}
+
+html.fi .ck-god-dashboard .ck-plan-badge--enterprise {
+  background: linear-gradient(135deg, rgba(0, 105, 72, 0.95) 0%, #0f9361 45%, #27d384 100%);
+  color: #f0fdf8 !important;
+  border-color: rgba(104, 219, 169, 0.45) !important;
+  box-shadow: 0 6px 20px rgba(15, 147, 97, 0.25);
+}
+
+html.fi .ck-god-dashboard .ck-plan-badge--school {
+  background: linear-gradient(135deg, #904d00 0%, #d67800 50%, #fe932c 100%);
+  color: #fff8f0 !important;
+  border-color: rgba(254, 147, 44, 0.4) !important;
+  box-shadow: 0 6px 20px rgba(214, 120, 0, 0.2);
+}
+
+html.fi .ck-god-dashboard .ck-plan-badge--trial {
+  background: linear-gradient(135deg, #712ae2 0%, #9d5dff 55%, #c4b5fd 100%);
+  color: #faf5ff !important;
+  border-color: rgba(210, 187, 255, 0.45) !important;
+  box-shadow: 0 6px 20px rgba(113, 42, 226, 0.2);
+}
+
+/* Status dots */
+html.fi .ck-god-dashboard .ck-status-dot {
+  display: inline-block;
+  height: 0.5rem;
+  width: 0.5rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+}
+
+html.fi .ck-god-dashboard .ck-status-dot--emerald {
+  background: linear-gradient(135deg, #0f9361, #27d384);
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.85);
+}
+
+html.fi .ck-god-dashboard .ck-status-dot--amber {
+  background: linear-gradient(135deg, #d67800, #fe932c);
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.75);
+}
+
+html.fi .ck-god-dashboard .ck-status-dot--slate {
+  background: #94a3b8;
+  box-shadow: 0 0 8px rgba(148, 163, 184, 0.45);
+}
+
+/* Module control */
+html.fi.dark .ck-god-dashboard section[aria-label='Module control'] {
+  background: linear-gradient(150deg, rgba(0, 105, 72, 0.12) 0%, rgba(14, 18, 28, 0.82) 50%, rgba(10, 14, 22, 0.9) 100%) !important;
+  border-color: rgba(104, 219, 169, 0.15) !important;
+  box-shadow: 0 28px 72px -26px rgba(0, 0, 0, 0.6), var(--ck-dash-inset) !important;
+  backdrop-filter: blur(36px) saturate(165%) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(165%) !important;
+}
+
+html.fi.dark .ck-god-dashboard .ck-module-row {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  background: rgba(8, 12, 20, 0.45) !important;
+  backdrop-filter: blur(18px) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+}
+
+html.fi.dark .ck-god-dashboard .ck-module-switch[style*='linear-gradient'] {
+  box-shadow: 0 8px 26px rgba(15, 147, 97, 0.4) !important;
+  border-color: rgba(104, 219, 169, 0.35) !important;
+}
+
+html.fi.dark .ck-god-dashboard .ck-module-switch:not([style*='linear-gradient']) {
+  background: rgba(48, 52, 64, 0.95) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* System health */
+html.fi.dark .ck-god-dashboard section[aria-label='System health'] {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, var(--ck-dash-glass) 100%) !important;
+}
+
+html.fi.dark .ck-god-dashboard section[aria-label='System health'] .ck-health-tile:first-of-type .ck-dash-title {
+  background: linear-gradient(120deg, #68dba9 0%, #27d384 50%, #0f9361 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+html.fi.dark .ck-god-dashboard section[aria-label='System health'] .rounded-2xl.border-zinc-200\/80 {
+  background: rgba(10, 14, 22, 0.55) !important;
+}
+
+html.fi.dark .ck-god-dashboard section[aria-label='System health'] .mt-10.rounded-2xl.border-zinc-200\/60 {
+  background: rgba(8, 12, 18, 0.55) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(18px) !important;
+}
+
+html.fi.dark .ck-god-dashboard section[aria-label='System health'] .flex-1.rounded-2xl.border-white\/40 {
+  background: rgba(14, 18, 26, 0.68) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Activity (7) + Alerts (5) */
+html.fi.dark .ck-god-dashboard div.lg\:col-span-7 > div,
+html.fi.dark .ck-god-dashboard div.lg\:col-span-5 > div {
+  background: linear-gradient(188deg, rgba(255, 255, 255, 0.05) 0%, var(--ck-dash-glass) 100%) !important;
+  border-color: rgba(104, 219, 169, 0.1) !important;
+  box-shadow: 0 22px 56px -24px rgba(0, 0, 0, 0.52), var(--ck-dash-inset) !important;
+  backdrop-filter: blur(30px) saturate(155%) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(155%) !important;
+}
+
+html.fi.dark .ck-god-dashboard .ck-timeline li:hover {
+  background: rgba(15, 147, 97, 0.06) !important;
+  box-shadow: inset 0 0 0 1px rgba(104, 219, 169, 0.1);
+}
+
+html.fi.dark .ck-god-dashboard div.lg\:col-span-5 .space-y-3 .rounded-2xl.border {
+  backdrop-filter: blur(12px) !important;
+}
+
+html.fi.dark .ck-god-dashboard .border-emerald-500\/25.bg-emerald-500\/8 {
+  background: linear-gradient(135deg, rgba(0, 105, 72, 0.24) 0%, rgba(12, 24, 20, 0.68) 100%) !important;
+  border-color: rgba(104, 219, 169, 0.28) !important;
+}
+
+html.fi.dark .ck-god-dashboard .border-amber-500\/30.bg-amber-500\/8 {
+  background: linear-gradient(135deg, rgba(144, 77, 0, 0.24) 0%, rgba(28, 22, 12, 0.68) 100%) !important;
+  border-color: rgba(254, 147, 44, 0.3) !important;
+}
+
+html.fi.dark .ck-god-dashboard .border-violet-500\/25.bg-violet-500\/8 {
+  background: linear-gradient(135deg, rgba(113, 42, 226, 0.22) 0%, rgba(22, 18, 32, 0.68) 100%) !important;
+  border-color: rgba(210, 187, 255, 0.25) !important;
+}
+
+/* 14-day trends */
+html.fi.dark .ck-god-dashboard section[aria-label='14-day trends'] {
+  background: linear-gradient(180deg, rgba(0, 105, 72, 0.08) 0%, var(--ck-dash-glass) 100%) !important;
+}
+
+html.fi.dark .ck-god-dashboard .ck-chart-card {
+  backdrop-filter: blur(12px) !important;
+}
+
+/* Hero CTAs */
+html.fi.dark .ck-god-dashboard .ck-dash-hero .ck-btn-primary {
+  box-shadow: 0 16px 40px rgba(15, 147, 97, 0.42) !important;
+}
+
+html.fi.dark .ck-god-dashboard .ck-dash-hero .ck-btn-secondary {
+  background: rgba(14, 18, 26, 0.72) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(14px) !important;
+}
