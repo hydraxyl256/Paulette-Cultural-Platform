@@ -17,5 +17,8 @@ php artisan optimize:clear
 # Run migrations
 php artisan migrate --force
 
+# Run seeders
+php artisan db:seed --force
+
 # Start server
 php artisan serve --host=0.0.0.0 --port=$PORT
