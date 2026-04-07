@@ -17,4 +17,4 @@ npm install
 npm run build   # not 'dev' — this creates production CSS/JS in public/build
 
 # 5. Start the server
-php artisan serve --host=0.0.0.0 --port=$PORT
+php artisan serve --host=0.0.0.0 --port=$PORT 
