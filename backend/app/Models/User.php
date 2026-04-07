@@ -10,8 +10,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasFactory, HasRoles, Notifiable;
@@ -68,5 +70,12 @@ class User extends Authenticatable
             'child' => ['progress:record', 'content:read'],
             default => []
         };
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // Return true to allow access in production (Render).
+        // Since auth is handled, all authenticated users with roles can access their permitted resources.
+        return true;
     }
 }
