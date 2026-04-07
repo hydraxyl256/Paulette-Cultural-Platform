@@ -73,5 +73,12 @@ EXPOSE 10000
 # =========================
 # Run migrations and start server
 # =========================
+
+# Copy entrypoint
 COPY entrypoint.sh /app/entrypoint.sh
+
+# FIX EVERYTHING HERE
+RUN sed -i 's/\r$//' /app/entrypoint.sh && chmod +x /app/entrypoint.sh
+
+# Run it
 CMD ["/app/entrypoint.sh"]
