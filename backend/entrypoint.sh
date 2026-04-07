@@ -1,20 +1,26 @@
 #!/bin/sh
 set -e
 
-# 1. Ensure SQLite file exists
+# Ensure SQLite exists
+mkdir -p database
 touch database/database.sqlite
 
-# 2. Laravel migrations
+# Clear Laravel caches (IMPORTANT)
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+php artisan cache:clear
+
+# Run migrations
 php artisan migrate --force
 
-# 3. Laravel config & view caches
+# FIX FILAMENT (THIS IS THE KEY)
+php artisan filament:upgrade
+
+# Rebuild caches AFTER everything is ready
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# 4. Build Tailwind / Vite assets
-npm install
-npm run build   # not 'dev' — this creates production CSS/JS in public/build
-
-# 5. Start the server
-php artisan serve --host=0.0.0.0 --port=$PORT 
+# Start server
+php artisan serve --host=0.0.0.0 --port=$PORT
