@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Paulette Culture Kids')</title>
+    <title>@yield('title', 'Paulette Cultural Platform')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
+
 <body>
     <div class="min-h-screen bg-gray-50">
         {{-- Navigation --}}
@@ -16,7 +18,7 @@
                     <div class="flex items-center">
                         <h1 class="text-2xl font-bold text-indigo-600">🌍 Culture Kids</h1>
                     </div>
-                    
+
                     <div class="flex items-center space-x-4">
                         @auth
                             <span class="text-gray-600">{{ Auth::user()->name }}</span>
@@ -54,4 +56,5 @@
 
     @livewireScripts
 </body>
+
 </html>

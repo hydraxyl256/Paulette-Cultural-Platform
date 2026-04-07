@@ -2,20 +2,19 @@
 
 echo "Starting Laravel app..."
 
-# Ensure database exists
+cd /app/backend
+
+# Ensure DB
 mkdir -p database
 touch database/database.sqlite
 
 # Permissions
 chmod -R 775 storage bootstrap/cache database
 
-# Clear caches (IMPORTANT for Filament)
-php artisan config:clear
-php artisan route:clear
-php artisan view:clear
-php artisan cache:clear
+# 🔥 Clear EVERYTHING (important for Vite)
+php artisan optimize:clear
 
-# Run migrations
+# Migrate
 php artisan migrate --force
 
 # Start server
