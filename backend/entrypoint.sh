@@ -4,17 +4,17 @@ echo "Starting Laravel app..."
 
 cd /app/backend
 
-# Ensure DB
+# Ensure database exists (absolute safety)
 mkdir -p database
 touch database/database.sqlite
 
-# Permissions
+# Fix permissions
 chmod -R 775 storage bootstrap/cache database
 
-# 🔥 Clear EVERYTHING (important for Vite)
+# Clear cache
 php artisan optimize:clear
 
-# Migrate
+# Run migrations
 php artisan migrate --force
 
 # Start server
